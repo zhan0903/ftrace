@@ -1,0 +1,36 @@
+#!/bin/bash
+
+COMMAND="$@"
+DEBUG_FS=/debug
+CURRENT_TRACER="function"
+
+#common: set the trace_options
+echo "$CURRENT_TRACER">$DEBUG_FS/tracing/current_tracer
+echo "sym-addr">$DEBUG_FS/tracing/trace_options
+echo "nosym-offset">$DEBUG_FS/tracing/trace_options
+echo "norecord-cmd">$DEBUG_FS/tracing/trace_options
+echo "nohex">$DEBUG_FS/tracing/trace_options
+echo "noirq-info">$DEBUG_FS/tracing/trace_options
+
+#set the pid
+#<<BLOCK
+current_pid=$$
+echo $current_pid > $DEBUG_FS/tracing/set_ftrace_pid
+#BLOCK
+
+#set the filter
+<<BLOCK
+echo '*:mod:ext4' > $DEBUG_FS/tracing/set_ftrace_filter
+echo 'mount_fs' >> $DEBUG_FS/tracing/set_ftrace_filter
+echo 'do_mount' >> $DEBUG_FS/tracing/set_ftrace_filter
+echo 'vfs_kern_mount' >> $DEBUG_FS/tracing/set_ftrace_filter
+echo 'mount_bdev' >> $DEBUG_FS/tracing/set_ftrace_filter
+BLOCK
+
+echo 1 > $DEBUG_FS/tracing/tracing_on
+eval "$COMMAND"
+echo 0 > $DEBUG_FS/tracing/tracing_on
+cp $DEBUG_FS/tracing/trace ./trace
+echo "nop" > $DEBUG_FS/tracing/current_tracer
+echo > $DEBUG_FS/tracing/set_ftrace_filter
+echo > $DEBUG_FS/tracing/set_ftrace_pid

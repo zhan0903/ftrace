@@ -1,0 +1,15 @@
+#!/usr/bin/bash
+yum -y install vim
+yum -y install tcl
+yum -y install expect
+yum -y install graphviz
+ln -s /sys/kernel/debug /debug
+chmod +x disk_init
+chmod +x ftrace2
+chmod +x convert3
+cp ftrace2 /usr/local/bin
+cp convert3 /usr/local/bin
+./disk_init
+cd mypvtrace
+make install
+make clean

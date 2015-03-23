@@ -1,0 +1,6 @@
+#!/bin/bash 
+#usage:convert3.sh <photo_name>
+python filter.py
+#cp --force trace_filted ./mypvtrace
+pvtrace ./trace_filted
+dot -Tjpg graph.dot -o $1
