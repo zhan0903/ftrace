@@ -1,0 +1,4 @@
+#!/bin/bash 
+python filter.py
+pvtrace ./trace_filted
+#dot -Tpng full.graph -o $1

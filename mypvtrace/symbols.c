@@ -20,7 +20,7 @@ func_t       functions[MAX_FUNCTIONS];
 unsigned int totals[MAX_FUNCTIONS];
 unsigned int calls[MAX_FUNCTIONS][MAX_FUNCTIONS];
 
-char imageName[50];
+/*char imageName[50];*/
 
 void initSymbol(void )
 {
@@ -104,13 +104,14 @@ void emitSymbols( void )
   int from, to;
   FILE *fp;
 
-  fp = fopen("graph.dot", "w");
+  fp = fopen("full.graph", "w");
   if (fp == NULL) {
-    printf("Couldn't open graph.dot\n");
+    printf("Couldn't open full.graph\n");
     exit(0);
   }
 
-  fprintf(fp, "digraph %s {\n\n", imageName );
+  fprintf(fp, "digraph fullgraph {\n");
+  fprintf(fp, "node [ fontname=Helvetica, fontsize=12 ];\n");
 
   /* Identify node shapes */
   for (from = 0 ; from < MAX_FUNCTIONS ; from++) {
@@ -127,11 +128,11 @@ void emitSymbols( void )
 
     if (totals[from]) {
 
-      fprintf( fp, "  %s [shape=rectangle]\n", functions[from].funcName );
+      fprintf( fp, "%s [shape=rectangle];\n", functions[from].funcName );
 
     } else {
 
-      fprintf( fp, "  %s [shape=ellipse]\n", functions[from].funcName );
+      fprintf( fp, "%s [shape=ellipse];\n", functions[from].funcName );
 
     }
 
@@ -145,7 +146,7 @@ void emitSymbols( void )
     for (to = 0 ; to < MAX_FUNCTIONS ; to++) {
 
       if (calls[from][to]) {
-        fprintf( fp, "  %s -> %s [label=\"%d calls\" fontsize=\"10\"]\n", 
+        fprintf( fp, "%s -> %s [label=\"%d calls\"];\n", 
                   functions[from].funcName, functions[to].funcName,
                   calls[from][to] );
       }

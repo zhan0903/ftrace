@@ -1,0 +1,8 @@
+#!/usr/bin/bash
+
+SFUNCTIONS=""
+IFUNCTIONS=""
+FUNCTION=""
+LEVEL=10
+
+gengraph --output-type "png" -f $FUNCTION -s $SFUNCTIONS -i $IFUNCTIONS -t -k -a -d $LEVEL
