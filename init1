@@ -6,10 +6,6 @@ yum -y install graphviz
 ln -s /sys/kernel/debug /debug
 chmod +x disk_init
 chmod +x ftrace2
-chmod +x convert3
-cp ftrace2 /usr/local/bin
-cp convert3 /usr/local/bin
-cp gengraph /usr/local/bin
 #./disk_init
 cd mypvtrace
 make install
